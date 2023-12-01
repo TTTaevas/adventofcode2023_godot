@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://civrflj23i4f3"]
+
+[ext_resource type="PackedScene" uid="uid://jov5vvv1gdos" path="res://map.tscn" id="1_l258o"]
+
+[sub_resource type="GDScript" id="GDScript_55l5y"]
+script/source = "extends Control
+
+var count_spelled_with_letters = true
+var taken_positions = []
+
+func new_position():
+	var position_x = (16 * (randi() % 70)) + 8
+	var position_y = (16 * (randi() % 40)) + 8
+	return Vector2(position_x, position_y)
+
+func _ready():
+	var document_piece_scene = preload(\"res://days/day1/document_piece.tscn\")
+	var input = FileAccess.open(\"res://days/day1/input.txt\", FileAccess.READ)
+	
+	var line_number = 0
+	while not input.eof_reached():
+		var line = input.get_line()
+		if not len(line):
+			continue
+		
+		line_number = line_number + 1
+		var document_piece = document_piece_scene.instantiate()
+		add_child(document_piece)
+		
+		var current_position = new_position()
+		while taken_positions.find(current_position) != -1:
+			current_position = new_position()
+		taken_positions.append(current_position)
+		document_piece.position = current_position
+		
+		document_piece.add_text(line, line_number)
+	input.close()
+	
+	var me = preload(\"res://days/day1/me.tscn\")
+	add_child(me.instantiate())
+"
+
+[node name="Day1" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_55l5y")
+
+[node name="Map" parent="." instance=ExtResource("1_l258o")]

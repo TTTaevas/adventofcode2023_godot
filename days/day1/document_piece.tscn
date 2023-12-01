@@ -1,0 +1,85 @@
+[gd_scene load_steps=10 format=3 uid="uid://76om2d2l2ubt"]
+
+[ext_resource type="Texture2D" uid="uid://ddb8klskaqd1v" path="res://sprites/Nature/Trees.png" id="1_8r05f"]
+
+[sub_resource type="GDScript" id="GDScript_klik3"]
+script/source = "extends Area2D
+
+var text = \"\"
+var line = 0
+
+func add_text(text_to_add: String, line_number: int) -> void:
+	text = text + text_to_add
+	line = line_number
+	$Label.text = str(line)
+	self.name = \"Piece_\" + str(line)
+	$Animation.set_frame(randi() % ($Animation.sprite_frames.get_frame_count(\"default\") - 1) + 1)
+
+func read_text() -> String:
+	var returned_text = text
+	text = \"\"
+	$Animation.set_frame(0)
+	return returned_text
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vhd07"]
+atlas = ExtResource("1_8r05f")
+region = Rect2(0, 0, 14, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2jn7"]
+atlas = ExtResource("1_8r05f")
+region = Rect2(16, 0, 14, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a10ym"]
+atlas = ExtResource("1_8r05f")
+region = Rect2(32, 0, 14, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ftbgw"]
+atlas = ExtResource("1_8r05f")
+region = Rect2(48, 0, 14, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7kejx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vhd07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o2jn7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a10ym")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ftbgw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ht4gh"]
+size = Vector2(14, 16)
+
+[sub_resource type="LabelSettings" id="LabelSettings_dfvr3"]
+font_size = 8
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="DocumentPiece" type="Area2D"]
+script = SubResource("GDScript_klik3")
+
+[node name="Animation" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_7kejx")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ht4gh")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -36.0
+offset_top = -3.0
+offset_right = 37.0
+offset_bottom = 9.0
+label_settings = SubResource("LabelSettings_dfvr3")
+horizontal_alignment = 1
+vertical_alignment = 1
