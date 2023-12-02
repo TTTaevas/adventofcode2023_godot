@@ -5,7 +5,8 @@
 [sub_resource type="GDScript" id="GDScript_55l5y"]
 script/source = "extends Control
 
-var count_spelled_with_letters = true
+var part2 = false
+var count_spelled_with_letters = part2
 var taken_positions = []
 
 func new_position():

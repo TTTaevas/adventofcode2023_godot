@@ -29,6 +29,7 @@ offset_left = -47.0
 offset_top = -44.0
 offset_right = 47.0
 offset_bottom = -10.0
+text = "0"
 label_settings = SubResource("LabelSettings_plbmf")
 horizontal_alignment = 1
 vertical_alignment = 1

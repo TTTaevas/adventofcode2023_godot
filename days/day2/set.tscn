@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://cpjel4ftskvdt"]
+
+[ext_resource type="Texture2D" uid="uid://cx3bmj4c6mmns" path="res://sprites/Miscellaneous/Chests.png" id="1_l8oqe"]
+
+[sub_resource type="GDScript" id="GDScript_08td6"]
+script/source = "extends Area2D
+
+var checked = false
+var cubes
+var max = {\"red\": 0, \"green\": 0, \"blue\": 0}
+
+func _ready():
+	$Sprite.frame = randi() % $Sprite.sprite_frames.get_frame_count(\"default\")
+
+func check(me, part2):
+	checked = true
+	if not part2:
+		for key in cubes.keys():
+			if cubes[key] > me.limits[key]:
+				return false
+		return true
+	else:
+		return true
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrg37"]
+atlas = ExtResource("1_l8oqe")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_av3px"]
+atlas = ExtResource("1_l8oqe")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gtduu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrg37")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_av3px")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lsuqk"]
+size = Vector2(16, 16)
+
+[node name="Set" type="Area2D"]
+script = SubResource("GDScript_08td6")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_gtduu")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_lsuqk")

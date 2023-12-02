@@ -1,0 +1,130 @@
+[gd_scene load_steps=14 format=3 uid="uid://cd64587tvib5s"]
+
+[ext_resource type="Texture2D" uid="uid://7u03qj665m7y" path="res://sprites/Buildings/Wood/Houses.png" id="1_iyhil"]
+
+[sub_resource type="GDScript" id="GDScript_dxk4s"]
+script/source = "extends Area2D
+
+var checked = false
+var for_game_id = 0
+var game_sets = []
+var game_scene = preload(\"res://days/day2/game.tscn\")
+var game_instance = game_scene.instantiate()
+
+func portal_taken(me):
+	var old_parent = me.get_parent()
+	old_parent.remove_child(me)
+	
+	var map = get_parent()
+	map.visible = true
+	
+	map.add_child(me)
+	me.position = me.old_position
+	map.get_parent().remove_child(old_parent)
+	me.portal_taken.disconnect(portal_taken)
+
+func check(me, _part2):
+	checked = true
+	var map = get_parent()
+	map.remove_child(me)
+	game_instance.add_child(me)
+	me.old_position = me.position
+	me.position = Vector2(8 * 9, 8 * 11)
+	
+	map.visible = false
+	me.portal_taken.connect(portal_taken)
+	
+	var day = map.get_parent()
+	day.add_child(game_instance)
+	return true
+
+func _ready():
+	$Sprite.frame = randi() % $Sprite.sprite_frames.get_frame_count(\"default\")
+	game_instance.id = for_game_id
+	game_instance.sets = game_sets
+"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7y3ky"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q0b3g"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7iug"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7p3ga"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m0ipx"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4sfd"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq3ky"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4i2sw"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fppq4"]
+atlas = ExtResource("1_iyhil")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_abr18"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7y3ky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q0b3g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7iug")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7p3ga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m0ipx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u4sfd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mq3ky")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4i2sw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fppq4")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vju7m"]
+resource_local_to_scene = true
+size = Vector2(16, 16)
+
+[node name="Building" type="Area2D"]
+script = SubResource("GDScript_dxk4s")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_abr18")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_vju7m")

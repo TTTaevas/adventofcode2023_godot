@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://kmpfeha6e1bt"]
+
+[ext_resource type="PackedScene" uid="uid://dwcd0tl3r5mlh" path="res://day_selection.tscn" id="1_du17x"]
+
+[sub_resource type="GDScript" id="GDScript_art5c"]
+script/source = "extends Control
+
+func _on_day_selection_selection_made(instance):
+	add_child(instance)
+"
+
+[node name="Index" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_art5c")
+
+[node name="DaySelection" parent="." instance=ExtResource("1_du17x")]
+
+[connection signal="selection_made" from="DaySelection" to="." method="_on_day_selection_selection_made"]

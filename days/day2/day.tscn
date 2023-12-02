@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=3 uid="uid://djg2syj2yeo6k"]
+
+[ext_resource type="PackedScene" uid="uid://jov5vvv1gdos" path="res://map.tscn" id="1_y34gp"]
+
+[sub_resource type="GDScript" id="GDScript_tsuqa"]
+script/source = "extends Control
+
+var part2 = false
+var taken_positions = []
+
+var limits = {\"red\": 12, \"green\": 13, \"blue\": 14}
+
+func new_position():
+	var position_x = (16 * (randi() % 72)) + 8
+	var position_y = (16 * (randi() % 40)) + 8
+	return Vector2(position_x, position_y)
+
+func _ready():
+	var building_scene = preload(\"res://days/day2/building.tscn\")
+	var input = FileAccess.open(\"res://days/day2/input.txt\", FileAccess.READ)
+	
+	while not input.eof_reached():
+		var line = input.get_line()
+		if not len(line):
+			continue
+		
+		var game_id = int(line.substr(len(\"Game \"), (line.find(\":\") - len(\"Game \"))))
+		var sets_string = line.substr(line.find(\":\") + 2).replace(\"; \", \";\").replace(\", \", \",\")
+		var sets = Array(sets_string.split(\";\"))
+		sets = Array(sets.map(func(s): return Array(s.split(\",\"))))
+		sets = sets.map(func(s):
+			var arr = s.map(func(c): return c.split(\" \"))
+			var dict = {}
+			for cube in arr:
+				dict[cube[1]] = int(cube[0])
+			return dict
+		)
+		
+		var building = building_scene.instantiate()
+		building.for_game_id = game_id
+		building.game_sets = sets
+		$Map.add_child(building)
+		
+		var current_position = new_position()
+		while taken_positions.find(current_position) != -1:
+			current_position = new_position()
+		taken_positions.append(current_position)
+		building.position = current_position
+	input.close()
+	
+	var me_scene = preload(\"res://days/day2/me.tscn\")
+	var me = me_scene.instantiate()
+	me.limits = limits
+	
+	var me_position = new_position()
+	while taken_positions.find(me_position) != -1:
+		me_position = new_position()
+	me.position = me_position
+	$Map.add_child(me)
+"
+
+[node name="Day2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_tsuqa")
+
+[node name="Map" parent="." instance=ExtResource("1_y34gp")]

@@ -44,10 +44,10 @@ func _ready():
 	var elements = get_parent().get_children()
 	pieces = elements.filter(func(e): return "Piece" in e.name)
 	
-	for i in 1000:
-		$Label.text = str(i)
+	for i in len(pieces):
 		var piece = await look_for_document_piece(i + 1)
 		current_text = piece.read_text()
 		var number = interpret_text(current_text)
 		numbers.append(number)
+		$Label.text = str(i + 1)
 		$CanvasLayer/Label.text = str(numbers.reduce(func(a, b): return a + b))

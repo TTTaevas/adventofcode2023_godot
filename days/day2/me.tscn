@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://ohl2fonrwer4"]
+
+[ext_resource type="PackedScene" uid="uid://1gy12p76qpoo" path="res://me.tscn" id="1_uk4g7"]
+[ext_resource type="Script" path="res://days/day2/me.gd" id="2_0x2k0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_lb8lg"]
+font_size = 24
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Me" instance=ExtResource("1_uk4g7")]
+script = ExtResource("2_0x2k0")
+
+[node name="Label" type="Label" parent="." index="2"]
+offset_left = -43.0
+offset_top = -42.0
+offset_right = 44.0
+offset_bottom = -8.0
+text = "0"
+label_settings = SubResource("LabelSettings_lb8lg")
+horizontal_alignment = 1
