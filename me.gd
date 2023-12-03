@@ -2,7 +2,7 @@ extends Area2D
 
 var looking_in_direction = "right"
 
-func move(direction: String):
+func move(direction: String):	
 	var animation_name = look(direction)
 	await get_tree().create_timer(0.01).timeout
 	var new_frame = 0

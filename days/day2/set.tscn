@@ -7,7 +7,6 @@ script/source = "extends Area2D
 
 var checked = false
 var cubes
-var max = {\"red\": 0, \"green\": 0, \"blue\": 0}
 
 func _ready():
 	$Sprite.frame = randi() % $Sprite.sprite_frames.get_frame_count(\"default\")
@@ -20,6 +19,9 @@ func check(me, part2):
 				return false
 		return true
 	else:
+		for key in cubes.keys():
+			if cubes[key] > get_parent().maximum[key]:
+				get_parent().maximum[key] = cubes[key]
 		return true
 "
 

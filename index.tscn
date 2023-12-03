@@ -6,6 +6,12 @@
 script/source = "extends Control
 
 func _on_day_selection_selection_made(instance):
+	var old_instance = find_child(\"Day\", false, false)
+	if old_instance:
+		remove_child(old_instance)
+	
+	$DaySelection.hide()
+	instance.name = \"Day\"
 	add_child(instance)
 "
 

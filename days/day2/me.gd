@@ -3,6 +3,7 @@ extends "res://me.gd"
 var limits
 var old_position = Vector2(8, 8)
 var ids = []
+var powers = []
 var part2
 
 signal portal_taken(me)
@@ -48,12 +49,26 @@ func go_to_unchecked():
 				go_to_unchecked()
 	else:
 		if not get_parent().get("id") == null:
-			ids.append(get_parent().id)
+			if not part2:
+				ids.append(get_parent().id)
+			else:
+				var maximum = get_parent().maximum.values()
+				var current_game_power = maximum.reduce(func(a, b): return a * b)
+				powers.append(current_game_power)
+			
 			go_back_to_portal()
+		else:
+			if not part2:
+				print(str(ids.reduce(func(a, b): return a + b)))
+			else:
+				$Label.text = str(powers.reduce(func(a, b): return a + b))
 
 func _ready():
 	part2 = get_parent().get_parent().part2
 	go_to_unchecked()
 
 func _process(_delta):
-	$Label.text = str(ids.reduce(func(a, b): return a + b))
+	if not part2:
+		$Label.text = str(ids.reduce(func(a, b): return a + b))
+	else:
+		$Label.text = str(powers.reduce(func(a, b): return a + b))

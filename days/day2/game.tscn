@@ -61,6 +61,7 @@ script/source = "extends TileMap
 
 var checked = false
 var id = 0
+var maximum = {\"red\": 0, \"green\": 0, \"blue\": 0}
 var sets = []
 var set_scene = preload(\"res://days/day2/set.tscn\")
 var taken_positions = []
